@@ -35,7 +35,7 @@ def get_filters():
         day = input("Which Day of the week (or all)").lower()
         if day not in ('all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'):
             print("Not an appropriate choice.")
-        else: 
+        else:
             break
     print('-'*40)
     return city, month, day
@@ -54,14 +54,14 @@ def load_data(city, month, day):
     """
 
     df = pd.read_csv(CITY_DATA[city])
-        
+
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-   
+
     # filter by month if applicable
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday
     df['hour'] = df['Start Time'].dt.hour
-    if month != 'all': 
+    if month != 'all':
         # use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
@@ -170,12 +170,15 @@ def main():
         user_stats(df, city)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
-        if restart.lower() != 'yes':
+        if restart.lower() = 'no':
             break
+        elif restart.lower() != 'yes':
+            print('Please, try again. (Yes/No)')
+
     i=0
     five_rows = df.iloc[:i+5]
     print(five_rows)
-    i+=5              
+    i+=5
     while True:
         display_more = input("Do you want to see 5 more lines of data? Yes or No.\n").lower()
         if display_more == 'yes':
