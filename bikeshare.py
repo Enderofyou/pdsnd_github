@@ -91,7 +91,7 @@ def time_stats(df):
     df['hour'] = df['Start Time'].dt.hour
     popular_hour = df['hour'].mode()[0]
     print('Most Popular Start Hour:', popular_hour)
-    print("\nThis took %s seconds." % (time.time() - start_time))
+    print("\nThis took %s seconds." % (time.time() - start_time).round())
     print('-'*40)
 
 
@@ -112,7 +112,7 @@ def station_stats(df):
     # TO DO: display most frequent combination of start station and end station trip
     popular_route = df.groupby(['Start Station', 'End Station']).size().nlargest(1)
     print('Most Popular Start and End Station:', popular_route)
-    print("\nThis took %s seconds." % (time.time() - start_time))
+    print("\nThis took %s seconds." % (time.time() - start_time).round())
     print('-'*40)
 
 
@@ -124,11 +124,11 @@ def trip_duration_stats(df):
 
     # TO DO: display total travel time
     total_time = df['Trip Duration'].sum()
-    print('Total Travel Time:', total_time)
+    print('Total Travel Time:', total_time.round())
     # TO DO: display mean travel time
     mean_time = df['Trip Duration'].mean()
-    print('Mean Travel Time:', mean_time)
-    print("\nThis took %s seconds." % (time.time() - start_time))
+    print('Mean Travel Time:', mean_time.round())
+    print("\nThis took %s seconds." % (time.time() - start_time).round())
     print('-'*40)
 
 
@@ -155,7 +155,7 @@ def user_stats(df, city):
         print('Most Recent Birth Year', int(recent_year))
         common_year = df['Birth Year'].mode()
         print('Most Common Birth Year', int(common_year))
-        print("\nThis took %s seconds." % (time.time() - start_time))
+        print("\nThis took %s seconds." % (time.time() - start_time).round())
         print('-'*40)
     else:
         print('Everyone in Washington does not wish their birth year/age known.')
