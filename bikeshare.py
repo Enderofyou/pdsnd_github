@@ -25,8 +25,8 @@ def get_filters():
             break
         # TO DO: get user input for month (all, january, february, ... , june)
     while True:
-        month = input("Which Month (or all)").lower()
-        if month not in ('all', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'):
+        month = input("Which month? (any one of the first 6 months or enter All to select all 6)").lower()
+        if month not in ('all', 'january', 'february', 'march', 'april', 'may', 'june'):
             print("Not an appropriate choice.")
         else:
             break
@@ -132,7 +132,7 @@ def trip_duration_stats(df):
     print('-'*40)
 
 
-def user_stats(df):
+def user_stats(df, city):
     """Displays statistics on bikeshare users."""
 
     print('\nCalculating User Stats...\n')
@@ -142,20 +142,23 @@ def user_stats(df):
     user_types = df['User Type'].value_counts()
     print(user_types)
     # TO DO: Display counts of gender
-    genders = df['Gender'].value_counts()
-    print(genders)
-
+    if city == 'new york city' or city == 'chicago':
+        genders = df['Gender'].value_counts()
+        print(genders)
+    else:
+        print('Everyone in Washington is of an undefined or non-binary gender.')
     # TO DO: Display earliest, most recent, and most common year of birth
-    earliest_year = df['Birth Year'].min()
-    print('Earliest Birth Year', int(earliest_year))
-    recent_year = df['Birth Year'].max()
-    print('Most Recent Birth Year', int(recent_year))
-    common_year = df['Birth Year'].mode()
-    print('Most Common Birth Year', int(common_year))
-    print("\nThis took %s seconds." % (time.time() - start_time))
-    print('-'*40)
-
-
+    if city == 'new york city' or city == 'chicago':
+        earliest_year = df['Birth Year'].min()
+        print('Earliest Birth Year', int(earliest_year))
+        recent_year = df['Birth Year'].max()
+        print('Most Recent Birth Year', int(recent_year))
+        common_year = df['Birth Year'].mode()
+        print('Most Common Birth Year', int(common_year))
+        print("\nThis took %s seconds." % (time.time() - start_time))
+        print('-'*40)
+    else:
+        print('Everyone in Washington does not wish their birth year/age known.')
 def main():
     while True:
         city, month, day = get_filters()
@@ -164,12 +167,23 @@ def main():
         time_stats(df)
         station_stats(df)
         trip_duration_stats(df)
-        user_stats(df)
+        user_stats(df, city)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
-
+    i=0
+    five_rows = df.iloc[:i+5]
+    print(five_rows)
+    i+=5              
+    while True:
+        display_more = input("Do you want to see 5 more lines of data? Yes or No.\n").lower()
+        if display_more == 'yes':
+            five_rows = df.iloc[i:i+5]
+            print(five_rows)
+            i+= 5
+        else:
+           break
 
 if __name__ == "__main__":
 	main()
