@@ -35,7 +35,7 @@ def get_filters():
         day = input("Which Day of the week (or all)").lower()
         if day not in ('all', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'):
             print("Not an appropriate choice.")
-        else: 
+        else:
             break
     print('-'*40)
     return city, month, day
@@ -54,15 +54,15 @@ def load_data(city, month, day):
     """
 
     df = pd.read_csv(CITY_DATA[city])
-        
+
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-   
+
     # filter by month if applicable
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday
     df['hour'] = df['Start Time'].dt.hour
-    if month != 'all': 
-        # use the index of the months list to get the corresponding int
+    if month != 'all':
+        # use the index of the months list to get the corresponding month
         months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
         df = df[df['month'] == month]
@@ -142,12 +142,16 @@ def user_stats(df, city):
     user_types = df['User Type'].value_counts()
     print(user_types)
     # TO DO: Display counts of gender
+    # Account for Washington missing gender column
+    # Explain to the user why this info is missing
     if city == 'new york city' or city == 'chicago':
         genders = df['Gender'].value_counts()
         print(genders)
     else:
         print('Everyone in Washington is of an undefined or non-binary gender.')
     # TO DO: Display earliest, most recent, and most common year of birth
+    # Account for Washington missing birth year column
+    # Explain to the user why this info is missing
     if city == 'new york city' or city == 'chicago':
         earliest_year = df['Birth Year'].min()
         print('Earliest Birth Year', int(earliest_year))
@@ -160,6 +164,8 @@ def user_stats(df, city):
     else:
         print('Everyone in Washington does not wish their birth year/age known.')
 def main():
+    """ Run the main program calling the functions in order and passing the data frame (df) and required inputs (city) to each function
+    """
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
@@ -168,14 +174,16 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df, city)
-
+    #TO DO: Ask the user if he/she would like to re-run the program
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
+    # TO DO: Display the first 5 lines of data
     i=0
     five_rows = df.iloc[:i+5]
     print(five_rows)
-    i+=5              
+    i+=5
+    # TO DO: Ask the user if he/she would like to display 5 additional lines of data
     while True:
         display_more = input("Do you want to see 5 more lines of data? Yes or No.\n").lower()
         if display_more == 'yes':
@@ -184,6 +192,6 @@ def main():
             i+= 5
         else:
            break
-
+#TO DO:  Call the main function
 if __name__ == "__main__":
 	main()
